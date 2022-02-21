@@ -15,7 +15,7 @@ jobs:
       - name: Pull and Push
         run: |
           git clone https://github.com/minetaro12/new-minetaro12pages ../origin
-          cp ../origin/content/posts/* .
+          cp -r ../origin/content/posts/* .
           git add .
           git commit -m "Update"
           git push
