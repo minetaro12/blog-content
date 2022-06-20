@@ -46,7 +46,7 @@ sudoをインストール
 ## 3. Xorgのインストール
 
 ```term
-# pacman -S xorg-server
+$ sudo pacman -S xorg-server
 ```
 
 ## 4. ビデオドライバのインストール
@@ -90,10 +90,10 @@ $ sudo systemctl enable lightdm
 $ sudo pacman -S xfce4 xfce4-goodies
 ```
 
-## 8. fcitx-mozcのインストール
+## 8. fcitx5のインストール
 
 ```term
-$ sudo pacman -S fcitx-mozc
+$ sudo pacman -S fcitx5-im fcitx5-mozc
 ```
 
 `.pam_environment`に以下の記述をします。
@@ -121,3 +121,22 @@ $ sudo localectl set-x11-keymap jp
 ## 10. 再起動
 
 `reboot`で再起動し、GUIでログインできればOK
+
+---
+
+## KDEの場合
+
+[5. フォントのインストール](/posts/20220615/archlinux-after-setup/#5-%E3%83%95%E3%82%A9%E3%83%B3%E3%83%88%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB)の後に、LightDMではなくSDDMをインストールします。
+
+```term
+$ sudo pacman -S sddm
+$ sudo systemctl enable sddm
+```
+
+### KDEのインストール
+
+```term
+$ sudo pacman -S plasma konsole
+```
+
+この後は[8. fcitx5のインストール](/posts/20220615/archlinux-after-setup/#8-fcitx5%E3%81%AE%E3%82%A4%E3%83%B3%E3%82%B9%E3%83%88%E3%83%BC%E3%83%AB)と同じです。
