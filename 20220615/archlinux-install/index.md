@@ -1,14 +1,12 @@
 ---
-title: "ArchLinuxのインストールメモ"
+title: "Arch Linuxのインストールメモ"
 date: "2022-06-15T14:38:22+09:00"
-tags: ["linux", "archlinux"]
+tags: ["linux", "arch linux"]
 comments: true
 showToc: true
 ---
-ライブ環境が起動しているという前提です。
-
-自分のThinkBook 13s Gen3では起動する際にビープ音が鳴ったので、切るには`loader/loader.conf`の`beep on`を`beep off`に書き換えます。
-
+ライブ環境が起動しているという前提です。  
+自分のThinkBook 13s Gen3では起動する際にビープ音が鳴ったので、切るには`loader/loader.conf`の`beep on`を`beep off`に書き換えます。  
 起動後にもTabキーを押すたびにビープ音が鳴るので`pcspkr`をアンロードします。
 
 ```
@@ -26,13 +24,12 @@ showToc: true
 ```
 # ls /sys/firmware/efi/efivars
 ```
-ディレクトリが存在している場合はUEFIで起動しています。
+ディレクトリが存在している場合はUEFIで起動しています。  
 BIOSとUEFIではパーティションの切り方やブートローダーのインストール方法が異なります。
 
 ## 3. インターネット接続の確認
 
-有線でDHCPであればそのまま接続できるはずです。
-
+有線でDHCPであればそのまま接続できるはずです。  
 無線を使う場合は[iwctl](https://wiki.archlinux.jp/index.php/Iwd#iwctl)を使います。
 
 ```
@@ -47,8 +44,7 @@ ping archlinux.jp
 
 ## 5. パーティション
 
-BIOSとUEFIでやり方が異なります。
-
+BIOSとUEFIでやり方が異なります。  
 今回は`/dev/sda`にインストールします。(環境によって異なります)
 
 ### BIOS
@@ -57,10 +53,8 @@ BIOSの場合は`fdisk`を使います。
 
 ### UEFI
 
-UEFIの場合は`gdisk`を使います。
-
-どちらとも今回は下のようなレイアウトにしました。
-
+UEFIの場合は`gdisk`を使います。  
+どちらとも今回は下のようなレイアウトにしました。  
 スワップは適宜設定してください。
 
 |マウントポイント|パーティション|パーティションタイプ|容量|
@@ -79,15 +73,17 @@ UEFIの場合は`gdisk`を使います。
 
 ![uefi-part](uefi-part.jpg)
 
-画像のようなすでにあるEFIシステムパーティションがあるのでこれを使います。
+画像のようなすでにあるEFIシステムパーティションがあるのでこれを使います。  
+**新しくEFIシステムパーティションを作らないでください**  
+Arch Linux用のシステムパーティションを、Windowsのパーティションの後ろに作成します。  
+リカバリ用のパーティションがある場合があるので(画像だと`WINRE_DRV`)、**消したり動かしたりしないでください。**  
+**デュアルブートは操作を誤るとWindowsのパーティションを破壊する恐れがあるので十分注意して行ってください**  
+EFIパーティションはそのままでArch Linuxをインストールするパーティションのみフォーマットします。  
+Arch Linuxをインストールするパーティションを`/dev/sdaB`とします。
 
-**新しくEFIシステムパーティションを作らないでください**
-
-ArchLinux用のシステムパーティションを、Windowsのパーティションの後ろに作成します。
-
-リカバリ用のパーティションがある場合があるので(画像だと`WINRE_DRV`)、**消したり動かしたりしないでください。**
-
-**デュアルブートは操作を誤るとWindowsのパーティションを破壊する恐れがあるので十分注意して行ってください**
+```
+# mkfs.ext4 /dev/sdaB
+```
 
 ## 6. ファイルシステムのマウント
 
@@ -99,7 +95,7 @@ ArchLinux用のシステムパーティションを、Windowsのパーティシ�
 
 ### UEFI環境でWindowsとデュアルブートする場合
 
-すでにあるEFIシステムパーティションが`/dev/sdaA`、ArchLinuxをインストールするパーティションが`/dev/sdaB`だとします。
+すでにあるEFIシステムパーティションが`/dev/sdaA`、Arch Linuxをインストールするパーティションが`/dev/sdaB`だとします。
 
 ```
 # mount /dev/sdaB /mnt
@@ -118,7 +114,7 @@ ArchLinux用のシステムパーティションを、Windowsのパーティシ�
 ## 8. パッケージのインストール
 
 ``` 
-# pacstrap /mnt base linux linux-firmware vim dhcpcd
+# pacstrap /mnt base base-devel linux linux-firmware vim dhcpcd
 ```
 
 今回はエディタとdhcpcdを一緒にインストールしておきます。
@@ -146,10 +142,8 @@ ArchLinux用のシステムパーティションを、Windowsのパーティシ�
 
 ## 12. ローカリゼーション
 
-`/etc/locale.gen`を編集して、使用するロケールをコメントアウトします。
-
-今回は`en_US.UTF-8 UTF-8`と`ja_JP.UTF-8 UTF-8`をコメントアウトしました。
-
+`/etc/locale.gen`を編集して、使用するロケールをコメントアウトします。  
+今回は`en_US.UTF-8 UTF-8`と`ja_JP.UTF-8 UTF-8`をコメントアウトしました。  
 次のコマンドでロケールを生成します。
 
 ```
@@ -181,7 +175,6 @@ ArchLinux用のシステムパーティションを、Windowsのパーティシ�
 ```
 127.0.0.1 localhost
 ::1       localhost
-127.0.1.1 hostname.localdomain hostname
 ```
 
 ## 14. rootパスワードの設定
@@ -236,8 +229,13 @@ UEFIのエントリに項目が追加されているのでそこから起動が�
 # systemctl enable dhcpcd
 ```
 
-`exit`でchroot環境から抜けます。
+再起動後無線LANで接続する場合はiwdもインストールします。
 
+```
+# pacman -S iwd
+```
+
+`exit`でchroot環境から抜けます。  
 `umount -R /mnt`でアンマウントし、`reboot`で再起動します。
 
 再起動後にログインができればOKです。
