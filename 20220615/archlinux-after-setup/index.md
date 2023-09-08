@@ -34,14 +34,14 @@ sudoが入っていない場合はインストール
 # pacman -S sudo
 ```
 
-`EDITOR=vim visudo`で`# %wheel ALL=(ALL) AL`をコメントを解除してください。  
+`EDITOR=vim visudo`で`# %wheel ALL=(ALL) ALL`をコメントを解除してください。  
 ユーザーをwheelグループに追加します。
 
 ```
 # usermod -aG wheel user
 ```
 
-`reboot`で再起動し新しく作成したユーザーでログインします。
+`exit`でログアウトし、新しく作成したユーザーでログインします。
 
 ## 3. Xorgのインストール
 
@@ -52,7 +52,7 @@ $ sudo pacman -S xorg-server
 ## 4. ビデオドライバのインストール
 
 ### Intelの場合
-
+**第4世代以上のハードウェアではインストール不要です**([出典](https://wiki.archlinux.jp/index.php/Intel_graphics#インストール))
 ```
 $ sudo pacman -S xf86-video-intel
 ```
@@ -94,18 +94,24 @@ $ sudo pacman -S plasma konsole sddm
 $ sudo systemctl enable sddm
 ```
 
+最小限のインストールの場合
+```
+$ sudo pacman -S breeze-gtk plasma-desktop kdeplasma-addons kscreen kde-gtk-config konsole kinfocenter sddm
+$ sudo systemctl enable sddm
+```
+
 ## 7. fcitx5のインストール
 
 ```
 $ sudo pacman -S fcitx5-im fcitx5-mozc
 ```
 
-`/etc/environment`に以下の記述をします。
+`~/.xprofile`に以下の記述をします。
 
-```/etc/environment
-GTK_IM_MODULE=fcitx
-QT_IM_MODULE=fcitx
-XMODIFIERS=@im=fcitx
+```~/.xprofile
+export GTK_IM_MODULE=fcitx
+export QT_IM_MODULE=fcitx
+export XMODIFIERS=@im=fcitx
 ```
 
 ## 8. ロケールの設定
@@ -131,6 +137,8 @@ $ sudo pacman -S networkmanager
 $ sudo systemctl disable dhcpcd
 $ sudo systemctl enable NetworkManager
 ```
+
+`Xfce4`の場合は`network-manager-applet`、`KDE`の場合は`plasma-nm`もインストールします。
 
 ## 10. 再起動
 

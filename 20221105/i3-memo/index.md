@@ -9,8 +9,11 @@ Arch Linuxへのi3wmの導入で色々とハマった箇所があったのでメ
 
 ## インストール
 
-`yay -S i3`でi3のパッケージグループをインストールする。(`yay -S i3-gaps`でもOK)  
+`paru -S i3`でi3のパッケージグループをインストールする。(~~`paru -S i3-gaps`~~`paru -S i3-wm`でもOK)  
 `lightdm`等を使って起動する。
+
+※追記  
+`i3-gaps`の機能は`i3-wm`にマージされました
 
 ## 設定
 
@@ -23,14 +26,14 @@ https://github.com/minetaro12/dotfiles
 
 ### 通知を表示させる
 
-`yay -S xfce4-notifyd`で`xfce4-notifyd`をインストール。  
+`paru -S xfce4-notifyd`で`xfce4-notifyd`をインストール。  
 以下の設定で起動する。
 
 - `exec --no-startup-id /usr/lib/xfce4/notifyd/xfce4-notifyd`
 
 ### polkitのパスワード入力画面が表示されない
 
-`yay -S polkit-gnome`で`polkit-gnome`をインストール。  
+`paru -S polkit-gnome`で`polkit-gnome`をインストール。  
 以下の設定で起動する。
 
 - `exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1`
@@ -95,7 +98,7 @@ mpvで動画を再生してる時にすべてのワークスペースで表示�
 
 ### ウィンドウの間に隙間を作る
 
-`i3-gaps`を使っている必要があります。
+~~`i3-gaps`を使っている必要があります。~~
 
 ```
 gaps top 5
@@ -118,3 +121,12 @@ gaps inner 5
 Exec=alacritty -e vim %F
 Terminal=false
 ```
+
+### VirtualBoxのフルスクリーンモードが機能しない
+
+VM設定→ユーザーインターフェース→フルスクリーン/シームレスモード時に表示のチェックを外す
+
+### VirtualBoxでmodキーがゲスト側に送信されて操作できない
+
+環境設定→入力→仮想マシンタブ→ホストキーの組み合わせをWindowsキーに設定  
+ウィンドウ操作したい場合はWindowsキーを二回押してから操作する
